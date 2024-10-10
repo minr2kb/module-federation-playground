@@ -9,10 +9,16 @@ export default defineConfig({
     federation({
       name: 'host-react',
       remotes: {
-        remoteReact: 'http://localhost:3001/assets/remoteEntry.js',
+        'remote-react': 'http://localhost:4001/assets/remoteEntry.js',
       },
       shared: ['react', 'react-dom'],
     }),
   ],
-  cacheDir: 'vite_cache',
+  cacheDir: './.vite',
+  build: {
+    target: 'esnext',
+  },
+  preview: {
+    port: 3000,
+  },
 });

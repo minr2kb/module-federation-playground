@@ -10,16 +10,19 @@ export default defineConfig({
       name: 'remote-react',
       filename: 'remoteEntry.js',
       exposes: {
-        './App': './src/App.tsx',
+        './Button': './src/components/Button.tsx',
       },
       shared: ['react', 'react-dom'],
     }),
   ],
-  cacheDir: 'vite_cache',
+  cacheDir: './.vite',
   build: {
     modulePreload: false,
     target: 'esnext',
     minify: false,
     cssCodeSplit: false,
+  },
+  preview: {
+    port: 4001,
   },
 });
