@@ -7,12 +7,21 @@ export default defineConfig({
   plugins: [
     react(),
     federation({
-      name: 'remote-react',
+      name: 'remote-weather',
       filename: 'remoteEntry.js',
       exposes: {
         './Button': './src/components/Button.tsx',
       },
-      shared: ['react', 'react-dom'],
+      shared: {
+        react: {
+          requiredVersion: '^18.0.0',
+          version: '18.0.0',
+        },
+        'react-dom': {
+          requiredVersion: '^18.0.0',
+          version: '18.0.0',
+        },
+      },
     }),
   ],
   cacheDir: './.vite',
@@ -21,8 +30,5 @@ export default defineConfig({
     target: 'esnext',
     minify: false,
     cssCodeSplit: false,
-  },
-  preview: {
-    port: 4001,
   },
 });

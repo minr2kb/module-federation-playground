@@ -7,18 +7,24 @@ export default defineConfig({
   plugins: [
     react(),
     federation({
-      name: 'host-react',
+      name: 'host',
       remotes: {
-        'remote-react': 'http://localhost:4001/assets/remoteEntry.js',
+        'remote-weather': 'http://localhost:4001/assets/remoteEntry.js',
       },
-      shared: ['react', 'react-dom'],
+      shared: {
+        react: {
+          requiredVersion: '^18.0.0',
+          version: '18.0.0',
+        },
+        'react-dom': {
+          requiredVersion: '^18.0.0',
+          version: '18.0.0',
+        },
+      },
     }),
   ],
   cacheDir: './.vite',
   build: {
     target: 'esnext',
-  },
-  preview: {
-    port: 3000,
   },
 });
