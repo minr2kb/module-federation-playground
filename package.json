@@ -1,5 +1,5 @@
 {
-  "name": "module-federation-template",
+  "name": "module-federation-playground",
   "packageManager": "yarn@4.5.0",
   "private": true,
   "workspaces": [
