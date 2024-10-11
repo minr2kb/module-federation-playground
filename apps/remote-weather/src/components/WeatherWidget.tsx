@@ -8,16 +8,16 @@ import {
 } from '@chakra-ui/react';
 
 import { formatDateWithDay } from '../utils/date';
-import useWeatherData from '../hooks/useWeatherData';
+import useCurrentWeatherData from '../hooks/useCurrentWeatherData';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const queryClient = new QueryClient();
 
 const WeatherWidgetContent = () => {
-  const { data: weathers, isLoading } = useWeatherData();
+  const { data: currentWeather, isLoading } = useCurrentWeatherData();
 
   const { time, description, image, temperature2m, relativeHumidity2m } =
-    weathers?.current ?? {};
+    currentWeather ?? {};
 
   return (
     <Card

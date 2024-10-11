@@ -36,7 +36,6 @@ const fetchWeatherData = async () => {
 
     const response = responses[0];
 
-    const current = response.current()!;
     const daily = response.daily()!;
 
     const dailyData = range(
@@ -63,41 +62,18 @@ const fetchWeatherData = async () => {
       };
     });
 
-    const currentData = () => {
-      const data = {
-        time: new Date(Number(current.time()) * 1000),
-        temperature2m: current.variables(0)!.value(),
-        relativeHumidity2m: current.variables(1)!.value(),
-        apparentTemperature: current.variables(2)!.value(),
-        isDay: current.variables(3)!.value(),
-        rain: current.variables(4)!.value(),
-        weatherCode: current.variables(5)!.value(),
-      };
-      const weatherCode = data.weatherCode as WeatherCode;
-      const { description, image } = weathersData[weatherCode];
-
-      return {
-        ...data,
-        description,
-        image,
-      };
-    };
-
-    return {
-      current: currentData(),
-      daily: dailyData,
-    };
+    return dailyData;
   } catch (e) {
     console.log('error', e);
     return undefined;
   }
 };
 
-const useWeatherData = () => {
+const useDailyWeatherData = () => {
   return useQuery({
-    queryKey: ['WEATHER'],
+    queryKey: ['WEATHER', 'DAILY'],
     queryFn: fetchWeatherData,
   });
 };
 
-export default useWeatherData;
+export default useDailyWeatherData;
