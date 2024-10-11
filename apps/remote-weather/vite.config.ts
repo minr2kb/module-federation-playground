@@ -10,18 +10,9 @@ export default defineConfig({
       name: 'remote-weather',
       filename: 'remoteEntry.js',
       exposes: {
-        './Button': './src/components/Button.tsx',
+        './WeatherWidget': './src/components/WeatherWidget.tsx',
       },
-      shared: {
-        react: {
-          requiredVersion: '^18.0.0',
-          version: '18.0.0',
-        },
-        'react-dom': {
-          requiredVersion: '^18.0.0',
-          version: '18.0.0',
-        },
-      },
+      shared: ['react', 'react-dom', '@chakra-ui/react'],
     }),
   ],
   cacheDir: './.vite',
