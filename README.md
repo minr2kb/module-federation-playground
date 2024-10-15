@@ -67,6 +67,18 @@ module federation에 관련한 실험들을 위한 모노레포 by. [@minr2kb](h
 - 모듈의 버젼관리가 힘들어진다.
 - 일단 serve를 해야 하므로 추가적인 비용이 들어간다
 
+### queryClient를 어떻게 공유해야할까?
+
+- 각 모듈마다 provider를 제공한다.
+- 모듈별 client 인스턴스를 따로 생성한다 -> 모듈별 쿼리 공유가 안됨..!
+- 외부에서 클라이언트 주입은? -> host에서 각 서비스 별 client 인스턴스를 만들고, prop으로 넣어주자!
+- 내부 provider는... HOC를 통해 씌우자
+
+### Remote expose는 어떻게 처리해주어야 할까?
+
+- 매번 vite.config에 추가하는 방법 아주 조금 귀찮다.
+- 아예 index 파일을 만들고 통채로 expose 시켜버리면?
+
 ### Webpack vs. Vite
 
 - WIP

@@ -13,8 +13,6 @@ const params = {
     'temperature_2m',
     'relative_humidity_2m',
     'apparent_temperature',
-    'is_day',
-    'rain',
     'weather_code',
   ],
   timezone: 'Asia/Tokyo',
@@ -30,12 +28,10 @@ const fetchWeatherData = async () => {
 
     const data = {
       time: new Date(Number(current.time()) * 1000),
-      temperature2m: current.variables(0)!.value(),
+      temperature2m: current.variables(0)!.value().toFixed(1),
       relativeHumidity2m: current.variables(1)!.value(),
-      apparentTemperature: current.variables(2)!.value(),
-      isDay: current.variables(3)!.value(),
-      rain: current.variables(4)!.value(),
-      weatherCode: current.variables(5)!.value(),
+      apparentTemperature: current.variables(2)!.value().toFixed(1),
+      weatherCode: current.variables(3)!.value(),
     };
     const weatherCode = data.weatherCode as WeatherCode;
     const { description, image } = weathersData[weatherCode];

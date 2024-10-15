@@ -9,15 +9,15 @@ import {
 
 import { formatDateWithDay } from '../utils/date';
 import useCurrentWeatherData from '../hooks/useCurrentWeatherData';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import withQueryClient from './hoc/withQueryProvider';
 
-const queryClient = new QueryClient();
-
-const WeatherWidgetContent = () => {
+const WeatherWidget = () => {
   const { data: currentWeather, isLoading } = useCurrentWeatherData();
 
   const { time, description, image, temperature2m, relativeHumidity2m } =
     currentWeather ?? {};
+
+  console.log(image);
 
   return (
     <Card
@@ -45,7 +45,7 @@ const WeatherWidgetContent = () => {
               borderRadius="full"
               boxSize="80px"
               objectFit="cover"
-              bg="gray.100"
+              //   bg="gray.100"
             />
           )}
 
@@ -54,7 +54,7 @@ const WeatherWidgetContent = () => {
           </Text>
 
           <Text fontSize="2xl" as="b" color="blue.900">
-            {isLoading ? '-' : temperature2m?.toFixed(1)}℃
+            {isLoading ? '-' : temperature2m}℃
           </Text>
 
           <Text fontSize="sm" color="gray.500">
@@ -66,12 +66,4 @@ const WeatherWidgetContent = () => {
   );
 };
 
-const WeatherWidget = () => {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <WeatherWidgetContent />
-    </QueryClientProvider>
-  );
-};
-
-export default WeatherWidget;
+export default withQueryClient(WeatherWidget);

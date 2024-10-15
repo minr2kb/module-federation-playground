@@ -9,20 +9,12 @@ const API_URL = 'https://api.open-meteo.com/v1/forecast';
 const params = {
   latitude: 37.566,
   longitude: 126.9784,
-  current: [
-    'temperature_2m',
-    'relative_humidity_2m',
-    'apparent_temperature',
-    'is_day',
-    'rain',
-    'weather_code',
-  ],
   daily: [
     'weather_code',
     'temperature_2m_max',
     'temperature_2m_min',
-    'apparent_temperature_max',
-    'apparent_temperature_min',
+    'sunrise',
+    'sunset',
     'uv_index_max',
   ],
   timezone: 'Asia/Tokyo',
@@ -45,13 +37,14 @@ const fetchWeatherData = async () => {
     ).map((t: number, i: number) => {
       const data = {
         time: new Date(t * 1000),
-        weatherCode: daily.variables(0)!.valuesArray()![i],
-        temperature2mMax: daily.variables(1)!.valuesArray()![i],
-        temperature2mMin: daily.variables(2)!.valuesArray()![i],
-        apparentTemperatureMax: daily.variables(3)!.valuesArray()![i],
-        apparentTemperatureMin: daily.variables(4)!.valuesArray()![i],
-        uvIndexMax: daily.variables(5)!.valuesArray()!,
+        weatherCode: daily.variables(0)!.values(i),
+        temperature2mMax: daily.variables(1)!.values(i)!.toFixed(0),
+        temperature2mMin: daily.variables(2)!.values(i)!.toFixed(0),
+        sunrise: daily.variables(3)!.values(i),
+        sunset: daily.variables(4)!.values(i),
+        uvIndexMax: daily.variables(5)!.values(i),
       };
+
       const weatherCode = data.weatherCode as WeatherCode;
       const { description, image } = weathersData[weatherCode];
 
@@ -65,7 +58,7 @@ const fetchWeatherData = async () => {
     return dailyData;
   } catch (e) {
     console.log('error', e);
-    return undefined;
+    return [];
   }
 };
 
