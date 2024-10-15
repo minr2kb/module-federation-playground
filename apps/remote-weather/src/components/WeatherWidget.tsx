@@ -7,16 +7,15 @@ import {
   VStack,
 } from '@chakra-ui/react';
 
-import { formatDateWithDay } from '../utils/date';
-import useCurrentWeatherData from '../hooks/useCurrentWeatherData';
+import { formatDateWithDay } from '@/utils/date';
+import useCurrentWeatherData from '@/hooks/useCurrentWeatherData';
 import withQueryClient from './hoc/withQueryProvider';
 
-const WeatherWidget = () => {
+type WeatherWidgetProps = { onClick: () => void };
+
+const WeatherWidget = ({ onClick }: WeatherWidgetProps) => {
   const { data: currentWeather, isLoading } = useCurrentWeatherData();
-
   const { time, description, image, temp, humidity } = currentWeather ?? {};
-
-  console.log(image);
 
   return (
     <Card
@@ -25,7 +24,9 @@ const WeatherWidget = () => {
       borderRadius="xl"
       overflow="hidden"
       bg="white"
+      cursor={'pointer'}
       _dark={{ bg: 'gray.700' }}
+      onClick={onClick}
     >
       <CardBody p={6}>
         <VStack spacing={2} align="center">
@@ -44,7 +45,6 @@ const WeatherWidget = () => {
               borderRadius="full"
               boxSize="80px"
               objectFit="cover"
-              //   bg="gray.100"
             />
           )}
 

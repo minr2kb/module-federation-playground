@@ -11,7 +11,6 @@ const fetchWeatherData = async (
 ): Promise<CurrentWeatherData | undefined> => {
   try {
     const { latitude = 37.566, longitude = 126.9784 } = location ?? {};
-    console.log(API_URL, API_KEY);
     const response = await axios.get<CurrentWeatherResponse>(API_URL, {
       params: {
         lat: latitude,

@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import { lazy, Suspense } from 'react';
 import {
   Card,
   CardBody,
@@ -7,8 +7,8 @@ import {
   VStack,
   Text,
 } from '@chakra-ui/react';
-
-const WeatherWidget = lazy(() => import('remote-weather/WeatherWidget'));
+import { useNavigate } from 'react-router-dom';
+import { weatherQueryClient } from '../util/queryClients';
 
 function Widget() {
   return (
@@ -20,28 +20,22 @@ function Widget() {
   );
 }
 
+const WeatherWidget = lazy(() => import('remote-weather/WeatherWidget'));
+
 const Home = () => {
+  const navi = useNavigate();
   return (
     <VStack bgColor={'gray.50'}>
-      <Container maxW={'3xl'} w={'100%'} p={4}>
+      <Container maxW={'3xl'} w={'100%'} minH={'100vh'} p={4}>
         <SimpleGrid w={'100%'} columns={[1, 3]} spacing={3}>
           <Suspense>
-            <WeatherWidget />
+            <WeatherWidget
+              client={weatherQueryClient}
+              onClick={() => {
+                navi('/weather');
+              }}
+            />
           </Suspense>
-          <Widget />
-          <Widget />
-          <Widget />
-          <Widget />
-          <Widget />
-          <Widget />
-          <Widget />
-          <Widget />
-          <Widget />
-          <Widget />
-          <Widget />
-          <Widget />
-          <Widget />
-          <Widget />
           <Widget />
           <Widget />
         </SimpleGrid>

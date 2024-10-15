@@ -5,7 +5,7 @@ module federation에 관련한 실험들을 위한 모노레포 by. [@minr2kb](h
 ## 스택
 
 - 패키지 매니져: Yarn Berry (4.5.0)
-- 호스트: React18 + Vite
+- 호스트: React18 + Vite / NEXT
 - 리모트: React18 + Vite / Next / WIP
 - UI: TBD
 
@@ -39,7 +39,7 @@ module federation에 관련한 실험들을 위한 모노레포 by. [@minr2kb](h
 
 - 대부분 레이아웃을 담당할 것으로 여겨짐
 - 인증, 라우팅 등 핵심 로직 담당
-- window간의 dispatch 이벤트를 통한 통신 시스템 구축 필요
+- window간의 dispatch 이벤트를 통한 커스텀 통신 시스템 구축 필요
 - SEO 관련 세팅도 담당하게 될 듯
 - 각 모듈 로드에 대한 에러 바운더리
 
@@ -71,13 +71,8 @@ module federation에 관련한 실험들을 위한 모노레포 by. [@minr2kb](h
 
 - 각 모듈마다 provider를 제공한다.
 - 모듈별 client 인스턴스를 따로 생성한다 -> 모듈별 쿼리 공유가 안됨..!
-- 외부에서 클라이언트 주입은? -> host에서 각 서비스 별 client 인스턴스를 만들고, prop으로 넣어주자!
+- 외부에서 클라이언트 주입은? -> host에서 각 서비스 별 client 인스턴스를 만들고, prop으로 넣어주자! -> 구현은 했는데, 작동이 되는지는 확인 필요
 - 내부 provider는... HOC를 통해 씌우자
-
-### Remote expose는 어떻게 처리해주어야 할까?
-
-- 매번 vite.config에 추가하는 방법 아주 조금 귀찮다.
-- 아예 index 파일을 만들고 통채로 expose 시켜버리면?
 
 ### Webpack vs. Vite
 
@@ -89,4 +84,5 @@ module federation에 관련한 실험들을 위한 모노레포 by. [@minr2kb](h
 
 ### 타입 자동화는 어떤 방식으로 구현 가능한가
 
-- WIP
+- 어차피 타입은 로컬에서만 필요하므로 따로 배포 파이프라인 팔 필요없이 Monorepo를 이용하자
+- share package를 참조시키는 방향으로 검토

@@ -1,35 +1,44 @@
-import { Button, Box, Flex, Heading } from '@chakra-ui/react';
+import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
+import { Box } from '@chakra-ui/react';
+import Home from './pages/Home';
+import { lazy, Suspense } from 'react';
+import { weatherQueryClient } from './util/queryClients';
+import TopNav from './components/TopNav';
 
-function TopNav() {
+function Layout() {
   return (
-    <Flex
-      as="nav"
-      color="gray.700"
-      backgroundColor={'white'}
-      sx={{
-        position: 'sticky',
-        top: 0,
-        left: 0,
-        right: 0,
-        p: 4,
-        zIndex: 999,
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        boxShadow: 'sm',
-      }}
-    >
-      <Heading size="md">Widget Board</Heading>
-      <Button>Login</Button>
-    </Flex>
+    <Box position="relative" height="100vh" overflow="auto">
+      <TopNav />
+      <Suspense>
+        <Outlet />
+      </Suspense>
+    </Box>
   );
 }
 
+const WeatherPage = lazy(() => import('remote-weather/WeatherPage'));
+
+// 라우터 설정
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Layout />,
+    children: [
+      {
+        path: '/',
+        element: <Home />,
+      },
+      {
+        path: '/weather',
+        element: <WeatherPage client={weatherQueryClient} />,
+      },
+    ],
+  },
+]);
+
+// App 컴포넌트 정의
 function App() {
-  return (
-    <Box position={'relative'} height={'100vh'} overflow={'auto'}>
-      <TopNav />
-    </Box>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
