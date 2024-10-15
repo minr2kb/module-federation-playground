@@ -14,8 +14,7 @@ import withQueryClient from './hoc/withQueryProvider';
 const WeatherWidget = () => {
   const { data: currentWeather, isLoading } = useCurrentWeatherData();
 
-  const { time, description, image, temperature2m, relativeHumidity2m } =
-    currentWeather ?? {};
+  const { time, description, image, temp, humidity } = currentWeather ?? {};
 
   console.log(image);
 
@@ -54,11 +53,11 @@ const WeatherWidget = () => {
           </Text>
 
           <Text fontSize="2xl" as="b" color="blue.900">
-            {isLoading ? '-' : temperature2m}℃
+            {isLoading ? '-' : temp}℃
           </Text>
 
           <Text fontSize="sm" color="gray.500">
-            습도: {isLoading ? '-' : relativeHumidity2m}%
+            습도: {isLoading ? '-' : humidity}%
           </Text>
         </VStack>
       </CardBody>

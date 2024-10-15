@@ -1,56 +1,61 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchWeatherApi } from 'openmeteo';
-import { weathersData } from '../data/weathers';
+import { CurrentWeatherData, CurrentWeatherResponse, Location } from '@/types';
+import QueryKeys from '@/utils/queryKeys';
+import axios from 'axios';
 
-export type WeatherCode = keyof typeof weathersData;
+const API_URL = `${import.meta.env.VITE_WEATHER_API_URL}/weather`;
+const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 
-const API_URL = 'https://api.open-meteo.com/v1/forecast';
-
-const params = {
-  latitude: 37.566,
-  longitude: 126.9784,
-  current: [
-    'temperature_2m',
-    'relative_humidity_2m',
-    'apparent_temperature',
-    'weather_code',
-  ],
-  timezone: 'Asia/Tokyo',
-};
-
-const fetchWeatherData = async () => {
+const fetchWeatherData = async (
+  location?: Location
+): Promise<CurrentWeatherData | undefined> => {
   try {
-    const responses = await fetchWeatherApi(API_URL, params);
+    const { latitude = 37.566, longitude = 126.9784 } = location ?? {};
+    console.log(API_URL, API_KEY);
+    const response = await axios.get<CurrentWeatherResponse>(API_URL, {
+      params: {
+        lat: latitude,
+        lon: longitude,
+        appid: API_KEY,
+        units: 'metric',
+        lang: 'kr',
+      },
+    });
 
-    const response = responses[0];
+    if (response.status >= 400) {
+      throw new Error('Failed to fetch weather data');
+    }
 
-    const current = response.current()!;
-
-    const data = {
-      time: new Date(Number(current.time()) * 1000),
-      temperature2m: current.variables(0)!.value().toFixed(1),
-      relativeHumidity2m: current.variables(1)!.value(),
-      apparentTemperature: current.variables(2)!.value().toFixed(1),
-      weatherCode: current.variables(3)!.value(),
-    };
-    const weatherCode = data.weatherCode as WeatherCode;
-    const { description, image } = weathersData[weatherCode];
+    const { data } = response;
 
     return {
-      ...data,
-      description,
-      image,
+      time: new Date(data.dt * 1000),
+      temp: data.main.temp.toFixed(1),
+      tempMax: data.main.temp_max.toFixed(1),
+      tempMin: data.main.temp_min.toFixed(1),
+      windSpeed: data.wind.speed.toFixed(1),
+      windDirection: data.wind.deg.toFixed(1),
+      visibility: data.visibility,
+
+      feelsLike: data.main.feels_like.toFixed(1),
+      humidity: data.main.humidity,
+      cityName: data.name,
+      sunrise: data.sys.sunrise,
+      sunset: data.sys.sunset,
+
+      description: data.weather[0].main,
+      image: `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`,
     };
   } catch (e) {
-    console.log('error', e);
+    console.error('error', e);
     return undefined;
   }
 };
 
-const useCurrentWeatherData = () => {
+const useCurrentWeatherData = (location?: Location) => {
   return useQuery({
-    queryKey: ['WEATHER', 'CURRENT'],
-    queryFn: fetchWeatherData,
+    queryKey: QueryKeys.CURRENT_WEATHER,
+    queryFn: async () => fetchWeatherData(location),
   });
 };
 

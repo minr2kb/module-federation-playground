@@ -1,179 +1,152 @@
 import {
   Flex,
-  Text,
   Grid,
   VStack,
-  Image,
-  Table,
-  Tr,
-  Tbody,
-  Td,
   GridItem,
   Container,
-  Heading,
   Stat,
   StatLabel,
   StatNumber,
   StatHelpText,
-  StatArrow,
+  StackDivider,
+  Box,
 } from '@chakra-ui/react';
-import useDailyWeatherData from '../hooks/useDailyWeatherData';
-import useCurrentWeatherData from '../hooks/useCurrentWeatherData';
-import withQueryClient from '../components/hoc/withQueryProvider';
-import useHourlyWeatherData from '../hooks/useHourlyWeatherData';
+import useCurrentWeatherData from '@/hooks/useCurrentWeatherData';
+import withQueryClient from '@/components/hoc/withQueryProvider';
+import useForecastWeatherData from '@/hooks/useForecastWeatherData';
+import { isDaytime } from '@/utils/date';
+import useLocation from '@/hooks/useLocation';
+import CurrentWeatherSection from '@/components/CurrentWeatherSection';
+import HourlyForecastItem from '@/components/HourlyForecastItem';
+import DailyForecastItem from '@/components/DailyForecastItem';
 
 const WeatherPage = () => {
-  const { data: currentWeather, isLoading: isLoadingCur } =
-    useCurrentWeatherData();
-  const { data: dailyData = [], isLoading: isLoadingDaily } =
-    useDailyWeatherData();
-  const { data: hourlyData = [], isLoading: isLoadingHourly } =
-    useHourlyWeatherData();
+  const location = useLocation();
+  const { data: currentWeather } = useCurrentWeatherData(location);
+  const { data: forecastWeather } = useForecastWeatherData(location);
 
-  //   if (isLoadingDaily) {
-  //     return (
-  //       <Flex justify="center" align="center" h="100vh">
-  //         <Spinner size="xl" color="blue.500" />
-  //         <Text ml={4} fontSize="xl" color="blue.500">
-  //           Loading weather data...
-  //         </Text>
-  //       </Flex>
-  //     );
-  //   }
+  const isDay = isDaytime();
+
+  const extraData = [
+    {
+      label: '습도',
+      value: `${currentWeather?.humidity ?? '-'}%`,
+      helpText: '현재 습도 수준',
+    },
+    {
+      label: '체감온도',
+      value: `${currentWeather?.feelsLike ?? '-'}°C`,
+      helpText: '현재 체감 온도',
+    },
+    {
+      label: '풍속',
+      value: `${currentWeather?.windSpeed ?? '-'} m/s`,
+      helpText: `${currentWeather?.windDirection}°`,
+    },
+    {
+      label: '가시거리',
+      value: `${currentWeather?.visibility.toLocaleString() ?? '-'}m`,
+      helpText: '최대 가시거리 (m)',
+    },
+  ];
 
   return (
-    <VStack bgColor={'#1E1F26'} color="white" w={'100vw'} minH={'100vh'} p={8}>
+    <VStack
+      bgColor={isDay ? 'gray.100' : '#1E1F26'}
+      color={isDay ? 'gray.900' : 'white'}
+      w={'100vw'}
+      minH={'100vh'}
+      p={2}
+    >
       <Container maxW={'4xl'} w={'100%'}>
         {/* 현재 날씨 정보 */}
-        <VStack mb={8}>
-          <Text fontSize="2xl">서울</Text>
-          <Heading fontSize="6xl">{currentWeather?.temperature2m}°C</Heading>
-          <Text>{currentWeather?.description}</Text>
-          <Text>
-            최고: {dailyData[0]?.temperature2mMax}°C | 최저:{' '}
-            {dailyData[0]?.temperature2mMin}°C
-          </Text>
-        </VStack>
+        <Box my={8}>
+          <CurrentWeatherSection
+            cityName={currentWeather?.cityName}
+            temp={currentWeather?.temp}
+            description={currentWeather?.description}
+            tempMax={currentWeather?.tempMax}
+            tempMin={currentWeather?.tempMin}
+          />
+        </Box>
 
         <Grid
-          templateRows="repeat(3, 1fr)"
-          templateColumns="repeat(3, 1fr)"
+          templateRows={['repeat(8, 1fr)', 'repeat(3, 1fr)']}
+          templateColumns={['repeat(2, 1fr)', 'repeat(6, 1fr)']}
           gap={4}
         >
           {/* 시간별 예보 */}
           <GridItem
             rowSpan={1}
-            colSpan={3}
+            colSpan={[2, 6]}
             p={4}
-            bg="whiteAlpha.50"
+            bg={isDay ? 'gray.200' : 'whiteAlpha.50'}
             borderRadius="md"
           >
-            <Flex gap={4} overflowX="auto" whiteSpace="nowrap" width="100%">
-              {hourlyData.slice(0, 24).map((hour, i) => (
-                <VStack gap={0} key={i} align="center" w={60}>
-                  <Text fontSize="sm">
-                    {hour.time.toLocaleTimeString([], {
-                      hour: '2-digit',
-                      hourCycle: 'h24',
-                    })}
-                  </Text>
-                  <Image
-                    src={hour.image}
-                    alt={hour.description}
-                    borderRadius="full"
-                    boxSize="30px"
-                    objectFit="cover"
-                  />
-                  <Text fontSize="xs">{hour.precipitationProbability}%</Text>
-                  <Text>{hour.temperature}°</Text>
-                </VStack>
+            <Flex gap={4} overflowX="auto" whiteSpace="nowrap" w={'100%'}>
+              {forecastWeather?.slice(0, 16).map((hour, i) => (
+                <HourlyForecastItem
+                  key={i}
+                  time={hour.time.toLocaleTimeString([], {
+                    hour: '2-digit',
+                    hourCycle: 'h24',
+                  })}
+                  temp={hour.temp}
+                  image={hour.image}
+                  pop={hour.precipitationProbability}
+                  description={hour.description}
+                />
               ))}
             </Flex>
           </GridItem>
 
-          {/* 일일 예보 */}
+          {/* 일일 예보 - 유료 API 대체 코드, 부정확함 */}
           <GridItem
             rowSpan={2}
-            colSpan={1}
+            colSpan={2}
             p={4}
-            bg="whiteAlpha.50"
+            bg={isDay ? 'gray.200' : 'whiteAlpha.50'}
             borderRadius="md"
           >
-            <Table variant="simple" size="sm">
-              <Tbody>
-                {dailyData.map((day, i) => (
-                  <Tr key={i}>
-                    <Td>
-                      {day.time.toLocaleDateString('ko-KR', {
-                        weekday: 'short',
-                      })}
-                    </Td>
-                    <Td p={0}>
-                      <Image
-                        src={day.image}
-                        alt={day.description}
-                        boxSize="30px"
-                        objectFit="cover"
-                      />
-                    </Td>
-                    <Td justifyContent={'end'} isNumeric>
-                      {day.temperature2mMax}°C - {day.temperature2mMin}°C
-                    </Td>
-                  </Tr>
+            <VStack
+              divider={<StackDivider borderColor="whiteAlpha.500" />}
+              spacing={2}
+              align="stretch"
+            >
+              {forecastWeather
+                ?.filter((_, i) => (i - 4) % 8 === 0)
+                .map((day, i) => (
+                  <DailyForecastItem
+                    key={i}
+                    date={day.time.toLocaleDateString('ko-KR', {
+                      weekday: 'short',
+                    })}
+                    tempMax={day.tempMax}
+                    tempMin={day.tempMin}
+                    image={day.image}
+                    description={day.description}
+                  />
                 ))}
-              </Tbody>
-            </Table>
+            </VStack>
           </GridItem>
 
-          {/* 습도 */}
-          <GridItem rowSpan={1} p={4} bg="whiteAlpha.50" borderRadius="md">
-            <Stat>
-              <StatLabel>습도</StatLabel>
-              <StatNumber>{hourlyData[0]?.humidity}%</StatNumber>
-              <StatHelpText>현재 습도 수준</StatHelpText>
-            </Stat>
-          </GridItem>
-          {/* 체감온도 */}
-          <GridItem rowSpan={1} p={4} bg="whiteAlpha.50" borderRadius="md">
-            <Stat>
-              <StatLabel>체감온도</StatLabel>
-              <StatNumber>{currentWeather?.apparentTemperature}°C</StatNumber>
-              {currentWeather?.apparentTemperature &&
-                currentWeather?.temperature2m && (
-                  <StatHelpText>
-                    <StatArrow
-                      type={
-                        currentWeather?.apparentTemperature >
-                        currentWeather?.temperature2m
-                          ? 'increase'
-                          : 'decrease'
-                      }
-                    />
-                    {(
-                      Number(currentWeather?.apparentTemperature) -
-                      Number(currentWeather.temperature2m)
-                    ).toFixed(1)}
-                    °C
-                  </StatHelpText>
-                )}
-            </Stat>
-          </GridItem>
-          {/* 풍속 */}
-          <GridItem rowSpan={1} p={4} bg="whiteAlpha.50" borderRadius="md">
-            <Stat>
-              <StatLabel>풍속</StatLabel>
-              <StatNumber>{hourlyData[0]?.windSpeed} m/s</StatNumber>
-              <StatHelpText>{hourlyData[0]?.windDirection}°</StatHelpText>
-            </Stat>
-          </GridItem>
-          {/* 가시거리 */}
-          <GridItem rowSpan={1} p={4} bg="whiteAlpha.50" borderRadius="md">
-            <Stat>
-              <StatLabel>자외선 지수</StatLabel>
-              <StatNumber>{dailyData[0]?.uvIndexMax}</StatNumber>
-              <StatHelpText>최대 자외선 지수</StatHelpText>
-            </Stat>
-          </GridItem>
+          {/* 추가 데이터 */}
+          {extraData.map((data, i) => (
+            <GridItem
+              key={i}
+              rowSpan={1}
+              colSpan={2}
+              p={4}
+              bg={isDay ? 'gray.200' : 'whiteAlpha.50'}
+              borderRadius="md"
+            >
+              <Stat>
+                <StatLabel>{data.label ?? '-'}</StatLabel>
+                <StatNumber>{data.value ?? '-'}</StatNumber>
+                <StatHelpText>{data.helpText}</StatHelpText>
+              </Stat>
+            </GridItem>
+          ))}
         </Grid>
       </Container>
     </VStack>

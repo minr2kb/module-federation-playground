@@ -1,17 +1,4 @@
-import { lazy, Suspense } from 'react';
-import {
-  Container,
-  VStack,
-  Text,
-  Button,
-  Box,
-  SimpleGrid,
-  Card,
-  Flex,
-  Heading,
-  CardBody,
-} from '@chakra-ui/react';
-const WeatherWidget = lazy(() => import('remote-weather/WeatherWidget'));
+import { Button, Box, Flex, Heading } from '@chakra-ui/react';
 
 function TopNav() {
   return (
@@ -37,45 +24,10 @@ function TopNav() {
   );
 }
 
-function Widget() {
-  return (
-    <Card>
-      <CardBody>
-        <Text>View a summary of all your customers over the last month.</Text>
-      </CardBody>
-    </Card>
-  );
-}
-
 function App() {
   return (
     <Box position={'relative'} height={'100vh'} overflow={'auto'}>
       <TopNav />
-      <VStack bgColor={'gray.50'}>
-        <Container maxW={'3xl'} w={'100%'} p={4}>
-          <SimpleGrid w={'100%'} columns={[1, 3]} spacing={3}>
-            <Suspense>
-              <WeatherWidget />
-            </Suspense>
-            <Widget />
-            <Widget />
-            <Widget />
-            <Widget />
-            <Widget />
-            <Widget />
-            <Widget />
-            <Widget />
-            <Widget />
-            <Widget />
-            <Widget />
-            <Widget />
-            <Widget />
-            <Widget />
-            <Widget />
-            <Widget />
-          </SimpleGrid>
-        </Container>
-      </VStack>
     </Box>
   );
 }
