@@ -2,6 +2,31 @@
 
 module federation에 관련한 실험들을 위한 모노레포 by. [@minr2kb](https://github.com/minr2kb)
 
+## 시작하기
+
+### Install
+
+```bash
+$ yarn
+```
+
+### Development
+
+```bash
+# remote&host앱 통합 실행
+$ yarn dev
+
+# host앱만 실행
+$ yarn dev:host
+
+# remote앱 전체 preview 실행
+$ yarn preview:remote
+```
+
+### Deploy
+
+WIP
+
 ## 스택
 
 - 패키지 매니져: Yarn Berry (4.5.0)
@@ -88,3 +113,11 @@ module federation에 관련한 실험들을 위한 모노레포 by. [@minr2kb](h
 - 직접 스크립트를 통해 host에 주입시키자 -> expose에 기반해서 inline module declaration을 추출해서 d.ts파일로 만든 후 host에 넣어주기
 - 어차피 타입 정보는 개발단의 정적 정보로서만 의미가 있기에 빡센 관리가 필요없음 / 로컬에서 host 실행을 위해서는 build 필수
 - generator 스크립트 등을 밖으로 빼는 고민 필요
+
+## TO-DO
+
+- remote앱 제너레이터 or 타입 export 패키지 제작
+- host앱 에러바운더리 처리
+- 커스텀 이벤트 버스 제작
+- 동적 remote 주소 구현
+- host앱 next(SSR)로 마이그레이션
