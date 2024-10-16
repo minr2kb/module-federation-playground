@@ -84,5 +84,7 @@ module federation에 관련한 실험들을 위한 모노레포 by. [@minr2kb](h
 
 ### 타입 자동화는 어떤 방식으로 구현 가능한가
 
-- 어차피 타입은 로컬에서만 필요하므로 따로 배포 파이프라인 팔 필요없이 Monorepo를 이용하자
-- share package를 참조시키는 방향으로 검토
+- 내부의 share package를 참조 -> 외부의 package 타입 참조시 내부적인 external package들의 참조가 달라 private 문제가 생김
+- 직접 스크립트를 통해 host에 주입시키자 -> expose에 기반해서 inline module declaration을 추출해서 d.ts파일로 만든 후 host에 넣어주기
+- 어차피 타입 정보는 개발단의 정적 정보로서만 의미가 있기에 빡센 관리가 필요없음 / 로컬에서 host 실행을 위해서는 build 필수
+- generator 스크립트 등을 밖으로 빼는 고민 필요

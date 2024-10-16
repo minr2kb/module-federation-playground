@@ -11,7 +11,12 @@ export default defineConfig({
       remotes: {
         'remote-weather': 'http://localhost:4001/assets/remoteEntry.js',
       },
-      shared: ['react', 'react-dom', '@chakra-ui/react'],
+      shared: [
+        'react',
+        'react-dom',
+        '@chakra-ui/react',
+        '@tanstack/react-query',
+      ],
     }),
   ],
   cacheDir: './.vite',

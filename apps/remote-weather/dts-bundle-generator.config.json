@@ -1,0 +1,25 @@
+{
+  "compilationOptions": {
+    "preferredConfigPath": "./tsconfig.app.json"
+  },
+  "entries": [
+    {
+      "filePath": "./src/components/WeatherWidget.tsx",
+      "outFile": "./dist/types/WeatherWidget.d.ts",
+      "output": {
+        "umdModuleName": "WeatherWidget",
+        "noBanner": true,
+        "inlineDeclareGlobals": true
+      }
+    },
+    {
+      "filePath": "./src/pages/WeatherPage.tsx",
+      "outFile": "./dist/types/WeatherPage.d.ts",
+      "output": {
+        "umdModuleName": "WeatherPage",
+        "noBanner": true,
+        "inlineDeclareGlobals": true
+      }
+    }
+  ]
+}

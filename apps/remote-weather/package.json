@@ -5,7 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port 3001",
-    "build": "tsc -b && vite build",
+    "prebuild:types": "node scripts/generate-dts-config.cjs",
+    "build:types": "dts-bundle-generator --config dts-bundle-generator.config.json",
+    "postbuild:types": "node scripts/postprocess-dts.cjs",
+    "build": "vite build && yarn build:types && yarn postbuild:types",
     "lint": "eslint .",
     "preview": "yarn build && vite preview --port 4001"
   },
@@ -26,6 +29,7 @@
     "@types/react": "^18.3.10",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react-swc": "^3.5.0",
+    "dts-bundle-generator": "^9.5.1",
     "eslint": "^9.11.1",
     "eslint-plugin-react": "^7.37.1",
     "eslint-plugin-react-hooks": "^4.6.2",
