@@ -1,0 +1,10 @@
+{
+  "name": "@kbmin/type-build-util",
+  "version": "1.0.0",
+  "main": "src/index.cjs",
+  "bin": "src/index.cjs",
+  "packageManager": "yarn@4.5.0",
+  "devDependencies": {
+    "dts-bundle-generator": "^9.5.1"
+  }
+}
