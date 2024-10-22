@@ -1,9 +1,0 @@
-{
-  "name": "remote-weather",
-  "filename": "remoteEntry.js",
-  "exposes": {
-    "./WeatherWidget": "./src/components/WeatherWidget.tsx",
-    "./WeatherPage": "./src/pages/WeatherPage.tsx"
-  },
-  "shared": ["react", "react-dom", "@chakra-ui/react", "@tanstack/react-query"]
-}

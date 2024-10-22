@@ -1,0 +1,6 @@
+{
+  "name": "remote-weather",
+  "exposesPath": "./exposes.json",
+  "outDir": "../host/src/remote-types",
+  "tsConfigPath": "./tsconfig.app.json"
+}

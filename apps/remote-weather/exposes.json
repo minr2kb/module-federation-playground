@@ -1,0 +1,4 @@
+{
+  "./WeatherWidget": "./src/components/WeatherWidget.tsx",
+  "./WeatherPage": "./src/pages/WeatherPage.tsx"
+}
