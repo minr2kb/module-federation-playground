@@ -9,7 +9,9 @@
   "scripts": {
     "preview:remote": "yarn workspaces foreach -Wpt --from 'remote*' run preview",
     "dev:host": "yarn workspace host run dev",
+    "dev:host-next": "yarn workspace host-next run dev",
     "dev": "concurrently 'yarn preview:remote' 'yarn dev:host'",
+    "dev:next": "concurrently 'yarn preview:remote' 'yarn dev:host-next'",
     "lint": "yarn workspaces foreach -pt run lint"
   },
   "devDependencies": {

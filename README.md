@@ -75,7 +75,7 @@ WIP
 - 네트워크 요청 증가
 - CDN 캐싱 전략의 필요성
 
-### Next 프로젝트에 도입시키려면? SSR 충분히 사용 가능한가?
+### [WIP] Next 프로젝트에 도입시키려면? SSR 충분히 사용 가능한가?
 
 - SSR의 이점은 있지만, 살리기 위해서는 remote모듈도 SSR을 지원해야만 한다. → 동일한 Next로 구현해야 할 수 있음
 - remote 설계에 제한이 생기므로 완전 독립적 모델로 구현하기는 한계가 있다
@@ -83,7 +83,7 @@ WIP
 - 따라서 NextJS로 하드하게 설계된 프로젝트가 아닌 이상, BFF와 React로 분리시키는게 효율적으로 보인다.
 - [@module-federation/nextjs-ssr](https://github.com/module-federation/module-federation-examples/tree/master/nextjs-ssr) ← 이거 체크해보자
 
-### 디자인시스템을 remote로 제공한다면?
+### [WIP] 디자인시스템을 remote로 제공한다면?
 
 - 모든 프로젝트에 실시간 업데이트되어 큰 일관성을 주지 않을까?
 - 의존성 관리도 최소화 시킬 수 있을 것으로 보임
@@ -92,7 +92,7 @@ WIP
 - 모듈의 버젼관리가 힘들어진다.
 - 일단 serve를 해야 하므로 추가적인 비용이 들어간다
 
-### queryClient를 어떻게 공유해야할까?
+### [DONE] queryClient를 어떻게 공유해야할까?
 
 - 각 모듈마다 provider를 제공한다.
 - 모듈별 client 인스턴스를 따로 생성한다 -> 모듈별 쿼리 공유가 안됨..!
@@ -103,16 +103,17 @@ WIP
 
 - WIP
 
-### Remote 주소를 동적으로 변경시키려면?
+### [WIP] Remote 주소를 동적으로 변경시키려면?
 
 - WIP
 
-### 타입 자동화는 어떤 방식으로 구현 가능한가
+### [DONE] 타입 자동화는 어떤 방식으로 구현 가능한가
 
 - 내부의 share package를 참조 -> 외부의 package 타입 참조시 내부적인 external package들의 참조가 달라 private 문제가 생김
 - 직접 스크립트를 통해 host에 주입시키자 -> expose에 기반해서 inline module declaration을 추출해서 d.ts파일로 만든 후 host에 넣어주기
 - 어차피 타입 정보는 개발단의 정적 정보로서만 의미가 있기에 빡센 관리가 필요없음 / 로컬에서 host 실행을 위해서는 build 필수
 - generator 스크립트 등을 밖으로 빼는 고민 필요
+- type-build-util 이라는 개별 패키지 제작.
 
 ## TO-DO
 

@@ -18,6 +18,7 @@ export default defineConfig({
         'react-dom',
         '@chakra-ui/react',
         '@tanstack/react-query',
+        '@emotion/react',
       ],
     }),
   ],
