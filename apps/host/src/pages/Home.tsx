@@ -1,16 +1,10 @@
 import { lazy, Suspense } from 'react';
-import {
-  Card,
-  CardBody,
-  Container,
-  SimpleGrid,
-  VStack,
-  Text,
-} from '@chakra-ui/react';
+import { Card, Container, SimpleGrid, VStack } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { weatherQueryClient } from '@/util/queryClients';
 import { Button } from '@/components/ui/button';
 import { Avatar } from '@/components/ui/avatar';
+import { ErrorBoundary } from 'react-error-boundary';
 
 function Widget() {
   return (
@@ -44,14 +38,16 @@ const Home = () => {
     <VStack bgColor={'gray.50'}>
       <Container maxW={'3xl'} w={'100%'} minH={'100vh'} p={4}>
         <SimpleGrid w={'100%'} columns={[1, 3]} gap={3}>
-          <Suspense>
-            <WeatherWidget
-              client={weatherQueryClient}
-              onClick={() => {
-                navi('/weather');
-              }}
-            />
-          </Suspense>
+          <ErrorBoundary fallback={null}>
+            <Suspense>
+              <WeatherWidget
+                client={weatherQueryClient}
+                onClick={() => {
+                  navi('/weather');
+                }}
+              />
+            </Suspense>
+          </ErrorBoundary>
           <Widget />
           <Widget />
         </SimpleGrid>
