@@ -1,11 +1,4 @@
-import {
-  Card,
-  CardBody,
-  Image,
-  Skeleton,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
+import { Card, Image, Skeleton, Text, VStack } from '@chakra-ui/react';
 
 import { formatDateWithDay } from '@/utils/date';
 import useCurrentWeatherData from '@/hooks/useCurrentWeatherData';
@@ -18,7 +11,7 @@ const WeatherWidget = ({ onClick }: WeatherWidgetProps) => {
   const { time, description, image, temp, humidity } = currentWeather ?? {};
 
   return (
-    <Card
+    <Card.Root
       maxW="sm"
       boxShadow="md"
       borderRadius="xl"
@@ -28,8 +21,8 @@ const WeatherWidget = ({ onClick }: WeatherWidgetProps) => {
       _dark={{ bg: 'gray.700' }}
       onClick={onClick}
     >
-      <CardBody p={6}>
-        <VStack spacing={2} align="center">
+      <Card.Body p={6}>
+        <VStack gap={2} align="center">
           <Text fontSize="lg" color="gray.600">
             {formatDateWithDay(
               time?.toDateString() ?? new Date().toDateString()
@@ -60,8 +53,8 @@ const WeatherWidget = ({ onClick }: WeatherWidgetProps) => {
             습도: {isLoading ? '-' : humidity}%
           </Text>
         </VStack>
-      </CardBody>
-    </Card>
+      </Card.Body>
+    </Card.Root>
   );
 };
 

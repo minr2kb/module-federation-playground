@@ -5,11 +5,8 @@ import {
   GridItem,
   Container,
   Stat,
-  StatLabel,
-  StatNumber,
-  StatHelpText,
-  StackDivider,
   Box,
+  StackSeparator,
 } from '@chakra-ui/react';
 import useCurrentWeatherData from '@/hooks/useCurrentWeatherData';
 import withQueryClient from '@/components/hoc/withQueryProvider';
@@ -19,6 +16,7 @@ import useLocation from '@/hooks/useLocation';
 import CurrentWeatherSection from '@/components/CurrentWeatherSection';
 import HourlyForecastItem from '@/components/HourlyForecastItem';
 import DailyForecastItem from '@/components/DailyForecastItem';
+import { StatValueText, StatLabel, StatHelpText } from '@/components/ui/stat';
 
 const WeatherPage = () => {
   const location = useLocation();
@@ -108,11 +106,7 @@ const WeatherPage = () => {
             bg={isDay ? 'gray.200' : 'whiteAlpha.50'}
             borderRadius="md"
           >
-            <VStack
-              divider={<StackDivider borderColor="whiteAlpha.500" />}
-              spacing={2}
-              align="stretch"
-            >
+            <VStack separator={<StackSeparator />} gap={2} align="stretch">
               {forecastWeather
                 ?.filter((_, i) => (i - 4) % 8 === 0)
                 .map((day, i) => (
@@ -140,11 +134,11 @@ const WeatherPage = () => {
               bg={isDay ? 'gray.200' : 'whiteAlpha.50'}
               borderRadius="md"
             >
-              <Stat>
+              <Stat.Root>
                 <StatLabel>{data.label ?? '-'}</StatLabel>
-                <StatNumber>{data.value ?? '-'}</StatNumber>
+                <StatValueText>{data.value ?? '-'}</StatValueText>
                 <StatHelpText>{data.helpText}</StatHelpText>
-              </Stat>
+              </Stat.Root>
             </GridItem>
           ))}
         </Grid>
