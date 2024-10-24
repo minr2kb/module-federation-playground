@@ -8,15 +8,31 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import { weatherQueryClient } from '../util/queryClients';
+import { weatherQueryClient } from '@/util/queryClients';
+import { Button } from '@/components/ui/button';
+import { Avatar } from '@/components/ui/avatar';
 
 function Widget() {
   return (
-    <Card>
-      <CardBody>
-        <Text>View a summary of all your customers over the last month.</Text>
-      </CardBody>
-    </Card>
+    <Card.Root>
+      <Card.Body gap="2">
+        <Avatar
+          src="https://picsum.photos/200/300"
+          name="Nue Camp"
+          size="lg"
+          shape="rounded"
+        />
+        <Card.Title mb="2">Nue Camp</Card.Title>
+        <Card.Description>
+          This is the card body. Lorem ipsum dolor sit amet, consectetur
+          adipiscing elit.
+        </Card.Description>
+      </Card.Body>
+      <Card.Footer justifyContent="flex-end">
+        <Button variant="outline">View</Button>
+        <Button>Join</Button>
+      </Card.Footer>
+    </Card.Root>
   );
 }
 
@@ -27,7 +43,7 @@ const Home = () => {
   return (
     <VStack bgColor={'gray.50'}>
       <Container maxW={'3xl'} w={'100%'} minH={'100vh'} p={4}>
-        <SimpleGrid w={'100%'} columns={[1, 3]} spacing={3}>
+        <SimpleGrid w={'100%'} columns={[1, 3]} gap={3}>
           <Suspense>
             <WeatherWidget
               client={weatherQueryClient}

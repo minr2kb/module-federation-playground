@@ -1,4 +1,5 @@
 import { Button, Flex, Heading } from '@chakra-ui/react';
+import { ColorModeButton } from './ui/color-mode';
 
 // TopNav 컴포넌트 정의
 const TopNav = () => {
@@ -7,7 +8,7 @@ const TopNav = () => {
       as="nav"
       color="gray.700"
       backgroundColor="white"
-      sx={{
+      css={{
         position: 'sticky',
         top: 0,
         left: 0,
@@ -20,7 +21,7 @@ const TopNav = () => {
       }}
     >
       <Heading size="md">Widget Board</Heading>
-      <Button>Login</Button>
+      <ColorModeButton />
     </Flex>
   );
 };
