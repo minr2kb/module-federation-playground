@@ -75,15 +75,15 @@ WIP
 - 네트워크 요청 증가
 - CDN 캐싱 전략의 필요성
 
-### [WIP] Next 프로젝트에 도입시키려면? SSR 충분히 사용 가능한가?
+### [CANCEL] Next 프로젝트에 도입시키려면? SSR 충분히 사용 가능한가?
 
 - SSR의 이점은 있지만, 살리기 위해서는 remote모듈도 SSR을 지원해야만 한다. → 동일한 Next로 구현해야 할 수 있음
 - remote 설계에 제한이 생기므로 완전 독립적 모델로 구현하기는 한계가 있다
 - SSR호환성에 대한 host 측에서 동적인 구별이 사실상 불가능하여 csr만 사용할 가능성이 높다.
 - 따라서 NextJS로 하드하게 설계된 프로젝트가 아닌 이상, BFF와 React로 분리시키는게 효율적으로 보인다.
-- [@module-federation/nextjs-ssr](https://github.com/module-federation/module-federation-examples/tree/master/nextjs-ssr) ← 이거 체크해보자
+- 보통 기존 모놀리식 구조를 마이그레이션한 사례가 많음 -> Next 프로젝트를 쪼개다 보니 remote도 다 next 동일 환경에서 하는 케이스가 많음. remote를 react로 해도 webpack 환경이 필수적으로 보임.
 
-### [WIP] 디자인시스템을 remote로 제공한다면?
+### [CANCEL] 디자인시스템을 remote로 제공한다면?
 
 - 모든 프로젝트에 실시간 업데이트되어 큰 일관성을 주지 않을까?
 - 의존성 관리도 최소화 시킬 수 있을 것으로 보임
@@ -91,6 +91,7 @@ WIP
 - 수많은 모듈과의 호환성 관리를 위해 테스팅 + 디버깅 비용이 많이 들어간다.
 - 모듈의 버젼관리가 힘들어진다.
 - 일단 serve를 해야 하므로 추가적인 비용이 들어간다
+- 결론) 초기 로드 속도를 너무 늦출 뿐더러 안정성 이슈로 반려
 
 ### [DONE] queryClient를 어떻게 공유해야할까?
 
@@ -111,14 +112,14 @@ WIP
 
 - 내부의 share package를 참조 -> 외부의 package 타입 참조시 내부적인 external package들의 참조가 달라 private 문제가 생김
 - 직접 스크립트를 통해 host에 주입시키자 -> expose에 기반해서 inline module declaration을 추출해서 d.ts파일로 만든 후 host에 넣어주기
+- 아니면 tsconfig에 path로 직접 넣어주는건? -> 이거도 외부 패키지 참조 private 에러로 불가
 - 어차피 타입 정보는 개발단의 정적 정보로서만 의미가 있기에 빡센 관리가 필요없음 / 로컬에서 host 실행을 위해서는 build 필수
-- generator 스크립트 등을 밖으로 빼는 고민 필요
-- type-build-util 이라는 개별 패키지 제작.
+- type-build-util 이라는 개별 패키지 제작해서 host로 직접 넣어주는 방식 채택
 
 ## TO-DO
 
-- remote앱 제너레이터 or 타입 export 패키지 제작
+- type-build-util에 watch모드..?
 - host앱 에러바운더리 처리
 - 커스텀 이벤트 버스 제작
 - 동적 remote 주소 구현
-- host앱 next(SSR)로 마이그레이션
+- 모노레포 pnpm nx or turbo 기반으로 옮겨보자.
