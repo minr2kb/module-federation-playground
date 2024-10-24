@@ -22,10 +22,7 @@
     "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "remote-weather/WeatherWidget": [
-        "../remote-weather/src/components/WeatherWidget.tsx"
-      ]
+      "@/*": ["src/*"]
     }
   },
   "include": ["src"]

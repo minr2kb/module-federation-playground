@@ -18,7 +18,7 @@ import HourlyForecastItem from '@/components/HourlyForecastItem';
 import DailyForecastItem from '@/components/DailyForecastItem';
 import { StatValueText, StatLabel, StatHelpText } from '@/components/ui/stat';
 
-const WeatherPage = () => {
+const WeatherPage = withQueryClient(() => {
   const location = useLocation();
   const { data: currentWeather } = useCurrentWeatherData(location);
   const { data: forecastWeather } = useForecastWeatherData(location);
@@ -145,6 +145,6 @@ const WeatherPage = () => {
       </Container>
     </VStack>
   );
-};
+});
 
-export default withQueryClient(WeatherPage);
+export default WeatherPage;

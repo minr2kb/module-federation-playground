@@ -6,7 +6,7 @@ import withQueryClient from './hoc/withQueryProvider';
 
 type WeatherWidgetProps = { onClick: () => void };
 
-const WeatherWidget = ({ onClick }: WeatherWidgetProps) => {
+const WeatherWidget = withQueryClient(({ onClick }: WeatherWidgetProps) => {
   const { data: currentWeather, isLoading } = useCurrentWeatherData();
   const { time, description, image, temp, humidity } = currentWeather ?? {};
 
@@ -56,6 +56,6 @@ const WeatherWidget = ({ onClick }: WeatherWidgetProps) => {
       </Card.Body>
     </Card.Root>
   );
-};
+});
 
-export default withQueryClient(WeatherWidget);
+export default WeatherWidget;

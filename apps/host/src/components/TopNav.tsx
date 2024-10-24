@@ -1,4 +1,4 @@
-import { Button, Flex, Heading } from '@chakra-ui/react';
+import { Flex, Heading } from '@chakra-ui/react';
 import { ColorModeButton } from './ui/color-mode';
 
 // TopNav 컴포넌트 정의
